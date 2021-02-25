@@ -2,12 +2,20 @@ package de.codecentric.psd.worblehat.web.formdata;
 
 import de.codecentric.psd.worblehat.web.validation.ISBN;
 import de.codecentric.psd.worblehat.web.validation.Numeric;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 /** This class represent the form data of the add book form. */
 public class BookDataFormData {
-
     @NotEmpty(message = "{empty.bookDataFormData.title}")
     private String title;
 
@@ -18,7 +26,8 @@ public class BookDataFormData {
     @NotEmpty(message = "{empty.bookDataFormData.yearOfPublication}")
     @Numeric(message = "{notvalid.bookDataFormData.yearOfPublication}")
     @Length(message = "{invalid.length.bookDataFormData.yearOfPublication}", min = 4, max = 4)
-    @NotInFuture(message = "{invalid.notInFuture.bookDataFormData.yearOfPublication}", min = 4, max = 4)
+    // @Size(max = 2021, message =
+    // "{invalid.notInFuture.bookDataFormData.yearOfPublication}")
     private String yearOfPublication;
 
     @NotEmpty(message = "{empty.bookDataFormData.isbn}")
