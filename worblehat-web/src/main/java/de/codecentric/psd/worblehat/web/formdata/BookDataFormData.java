@@ -3,13 +3,9 @@ package de.codecentric.psd.worblehat.web.formdata;
 import de.codecentric.psd.worblehat.web.validation.ISBN;
 import de.codecentric.psd.worblehat.web.validation.Numeric;
 
-import java.time.Year;
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /** This class represent the form data of the add book form. */
@@ -23,6 +19,7 @@ public class BookDataFormData {
     private String edition;
 
     @NotEmpty(message = "{empty.bookDataFormData.yearOfPublication}")
+    @Min(1000)
     @Max(2021)
     private String yearOfPublication;
 
