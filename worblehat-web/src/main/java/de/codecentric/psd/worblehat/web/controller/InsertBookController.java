@@ -20,36 +20,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/insertBooks")
 public class InsertBookController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InsertBookController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(InsertBookController.class);
 
-    private BookService bookService;
+  private BookService bookService;
 
-    @Autowired
-    public InsertBookController(BookService bookService) {
-        this.bookService = bookService;
+  @Autowired
+  public InsertBookController(BookService bookService) {
+    this.bookService = bookService;
+  }
+
+  @RequestMapping(method = RequestMethod.GET)
+  public void setupForm(ModelMap modelMap) {
+    modelMap.put("bookDataFormData", new BookDataFormData());
+  }
+
+  @RequestMapping(method = RequestMethod.POST)
+  public String processSubmit(
+      @ModelAttribute("bookDataFormData") @Valid BookDataFormData bookDataFormData,
+      BindingResult result) {
+
+    if (result.hasErrors()) {
+      return "insertBooks";
+    } else {
+      Optional<Book> book =
+          bookService.createBook(
+              bookDataFormData.getTitle(),
+              bookDataFormData.getAuthor(),
+              bookDataFormData.getEdition(),
+              bookDataFormData.getIsbn(),
+              Integer.parseInt(bookDataFormData.getYearOfPublication()));
+      if (book.isPresent()) {
+        LOG.info("new book instance is created: 0");
+      } else {
+        LOG.debug("failed to create new book with: 0");
+      }
+      return "redirect:bookList";
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public void setupForm(ModelMap modelMap) {
-        modelMap.put("bookDataFormData", new BookDataFormData());
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String processSubmit(@ModelAttribute("bookDataFormData") @Valid BookDataFormData bookDataFormData,
-            BindingResult result) {
-
-        if (result.hasErrors()) {
-            return "insertBooks";
-        } else {
-            Optional<Book> book = bookService.createBook(bookDataFormData.getTitle(), bookDataFormData.getAuthor(),
-                    bookDataFormData.getEdition(), bookDataFormData.getIsbn(),
-                    Integer.parseInt(bookDataFormData.getYearOfPublication()));
-            if (book.isPresent()) {
-                LOG.info("new book instance is created: 0");
-            } else {
-                LOG.debug("failed to create new book with: 0");
-            }
-            return "redirect:bookList";
-        }
-    }
+  }
 }
