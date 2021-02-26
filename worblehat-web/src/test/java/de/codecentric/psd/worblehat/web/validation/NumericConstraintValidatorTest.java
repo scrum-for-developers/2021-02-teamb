@@ -21,12 +21,6 @@ public class NumericConstraintValidatorTest {
   }
 
   @Test
-  public void initializeShouldTakeNumeric() throws Exception {
-    Numeric numeric = mock(Numeric.class);
-    numericConstraintValidator.initialize(numeric);
-  }
-
-  @Test
   public void shouldReturnTrueIfBlank() throws Exception {
     boolean actual = numericConstraintValidator.isValid("", constraintValidatorContext);
     assertTrue(actual);
