@@ -23,45 +23,42 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class BorrowBookController {
 
-  private BookService bookService;
+    public String borrow = "borrow";
 
-  @Autowired
-  public BorrowBookController(BookService bookService) {
-    this.bookService = bookService;
-  }
+    private BookService bookService;
 
-  @RequestMapping(method = RequestMethod.GET)
-  public void setupForm(final ModelMap model) {
-    model.put("borrowFormData", new BookBorrowFormData());
-  }
-
-  @Transactional
-  @RequestMapping(method = RequestMethod.POST)
-  public String processSubmit(
-      @ModelAttribute("borrowFormData") @Valid BookBorrowFormData borrowFormData,
-      BindingResult result) {
-    if (result.hasErrors()) {
-      return "borrow";
+    @Autowired
+    public BorrowBookController(BookService bookService) {
+        this.bookService = bookService;
     }
-    Set<Book> books = bookService.findBooksByIsbn(borrowFormData.getIsbn());
-    if (books.isEmpty()) {
-      result.rejectValue("isbn", "noBookExists");
-      return "borrow";
+
+    @RequestMapping(method = RequestMethod.GET)
+    public void setupForm(final ModelMap model) {
+        model.put("borrowFormData", new BookBorrowFormData());
     }
-    Optional<Borrowing> borrowing =
-        bookService.borrowBook(borrowFormData.getIsbn(), borrowFormData.getEmail());
 
-    return borrowing
-        .map(b -> "home")
-        .orElseGet(
-            () -> {
-              result.rejectValue("isbn", "noBorrowableBooks");
-              return "borrow";
-            });
-  }
+    @Transactional
+    @RequestMapping(method = RequestMethod.POST)
+    public String processSubmit(@ModelAttribute("borrowFormData") @Valid BookBorrowFormData borrowFormData,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return borrow;
+        }
+        Set<Book> books = bookService.findBooksByIsbn(borrowFormData.getIsbn());
+        if (books.isEmpty()) {
+            result.rejectValue("isbn", "noBookExists");
+            return borrow;
+        }
+        Optional<Borrowing> borrowing = bookService.borrowBook(borrowFormData.getIsbn(), borrowFormData.getEmail());
 
-  @ExceptionHandler(Exception.class)
-  public String handleErrors(Exception ex, HttpServletRequest request) {
-    return "home";
-  }
+        return borrowing.map(b -> "home").orElseGet(() -> {
+            result.rejectValue("isbn", "noBorrowableBooks");
+            return borrow;
+        });
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleErrors(Exception ex, HttpServletRequest request) {
+        return "home";
+    }
 }
