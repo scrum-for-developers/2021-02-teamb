@@ -86,7 +86,11 @@ public class Book implements Serializable {
   }
 
   public void setIsbn(String isbn) {
-    this.isbn = isbn;
+    this.isbn = trimISBN(isbn);
+  }
+
+  public String trimISBN(String _isbn) {
+    return _isbn.trim();
   }
 
   public void setYearOfPublication(int yearOfPublication) {
