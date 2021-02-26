@@ -35,6 +35,12 @@
 
         <release version="1.3.0" date="2021-02-26" description="Eingabe-Komfort erhöhen">
             <action dev="Osterhasen" type="update">
+				ISBN Trimming functionality
+			</action>
+        </release>
+
+        <release version="1.3.0" date="2021-02-26" description="Eingabe-Komfort erhöhen">
+            <action dev="Osterhasen" type="update">
 				13-stellige ISBN werden zugelassen.
 			</action>
         </release>

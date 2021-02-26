@@ -58,7 +58,11 @@ public class HtmlBook {
   }
 
   public void setIsbn(String isbn) {
-    this.isbn = isbn;
+    this.isbn = trimISBN(isbn);
+  }
+
+  public String trimISBN(String _isbn) {
+    return _isbn.trim();
   }
 
   public String getYearOfPublication() {
