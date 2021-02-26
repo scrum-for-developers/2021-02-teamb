@@ -7,27 +7,31 @@ import org.hibernate.validator.constraints.NotEmpty;
 /** Form data object from the borrow view. */
 public class BookBorrowFormData {
 
-  @NotEmpty(message = "{empty.borrowCmd.isbn}")
-  @ISBN(message = "{notvalid.borrowCmd.isbn}")
-  private String isbn;
+    @NotEmpty(message = "{empty.borrowCmd.isbn}")
+    @ISBN(message = "{notvalid.borrowCmd.isbn}")
+    private String isbn;
 
-  @NotEmpty(message = "{empty.borrowCmd.email}")
-  @Email(message = "{notvalid.borrowCmd.email}")
-  private String email;
+    @NotEmpty(message = "{empty.borrowCmd.email}")
+    @Email(message = "{notvalid.borrowCmd.email}")
+    private String email;
 
-  public String getIsbn() {
-    return isbn;
-  }
+    public String getIsbn() {
+        return isbn;
+    }
 
-  public void setIsbn(String isbn) {
-    this.isbn = isbn;
-  }
+    public void setIsbn(String isbn) {
+        this.isbn = trimISBN(isbn);
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public String trimISBN(String _isbn) {
+        return _isbn.trim();
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
