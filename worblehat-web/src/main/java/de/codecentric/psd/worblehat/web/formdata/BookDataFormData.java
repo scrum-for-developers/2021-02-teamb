@@ -20,8 +20,8 @@ public class BookDataFormData {
     @Numeric(message = "{notvalid.bookDataFormData.edition}")
     private String edition;
 
-    private static final int MIN_YEAR = 2021;
-    private static final int MAX_YEAR = 1000;
+    private static final int MIN_YEAR = 1000;
+    private static final int MAX_YEAR = 2021;
     @NotEmpty(message = "{empty.bookDataFormData.yearOfPublication}")
     @Min(value = MIN_YEAR, message = "{invalid.notInFuture.bookDataFormData.yearOfPublicationNotInPast}")
     @Max(value = MAX_YEAR, message = "{invalid.notInFuture.bookDataFormData.yearOfPublicationNotInFuture}")
@@ -47,7 +47,11 @@ public class BookDataFormData {
     }
 
     public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        this.isbn = trimISBN(isbn);
+    }
+
+    public String trimISBN(String _isbn) {
+        return _isbn.trim();
     }
 
     public String getAuthor() {
